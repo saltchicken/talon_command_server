@@ -128,7 +128,11 @@ if __name__ == "__main__":
                 #     chunk = chunk.replace('\n', '')
                 #     controller.clear()
                 output += chunk
-                writer.write(output)
+                try:
+                    writer.write(output)
+                except Exception as e:
+                    print(e)
+                    print(output)
                 # controller.append(chunk)
                 # print(chunk, end="", flush=True)
             
