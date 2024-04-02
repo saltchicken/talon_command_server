@@ -132,11 +132,11 @@ if __name__ == "__main__":
                     #     controller.clear()
                     output += chunk
                     try:
-                        print('wrote', output)
+                        # print('wrote', output)
                         writer.write(output)
                     except Exception as e:
                         print(e)
-                        print(output)
+                        # print(output)
                     # controller.append(chunk)
                     # print(chunk, end="", flush=True)
                 
