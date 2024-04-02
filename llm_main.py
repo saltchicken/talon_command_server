@@ -32,7 +32,7 @@ class ScreenWriterClient():
         
     def __enter__(self):
         # TODO: Add try | except
-        self.client_socket.connect(('localhost', 12346))
+        self.client_socket.connect(('192.168.1.13', 12346))
         return self
     
     def __exit__(self, *args, **kwargs):
@@ -90,8 +90,8 @@ if __name__ == "__main__":
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the port
-    # server_address = ('0.0.0.0', 12345)
-    server_address = ('127.0.0.1', 12345)
+    server_address = ('0.0.0.0', 12345)
+    # server_address = ('127.0.0.1', 12345)
 
     print('Starting up on {} port {}'.format(*server_address))
     server_socket.bind(server_address)
