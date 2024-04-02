@@ -85,6 +85,7 @@ if __name__ == "__main__":
     # retriever = vector.as_retriever()
     # retrieval_chain = create_retrieval_chain(retriever, document_chain)
     
+    print('connecting to ScreenWriterServer')
     with ScreenWriterClient() as writer:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
