@@ -86,62 +86,63 @@ if __name__ == "__main__":
     # retrieval_chain = create_retrieval_chain(retriever, document_chain)
     
     writer = ScreenWriterClient()
+    with ScreenWriterClient() as writer:
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Bind the socket to the port
-    server_address = ('0.0.0.0', 12345)
-    # server_address = ('127.0.0.1', 12345)
+        # Bind the socket to the port
+        server_address = ('0.0.0.0', 12345)
+        # server_address = ('127.0.0.1', 12345)
 
-    print('Starting up on {} port {}'.format(*server_address))
-    server_socket.bind(server_address)
+        print('Starting up on {} port {}'.format(*server_address))
+        server_socket.bind(server_address)
 
-    # app = QApplication(sys.argv)
-    # window = OverlayWindow('yes', 50)
-    # window.show()
-    # sys.exit(app.exec_())
-    # queue = Queue()
-    # p = Process(target=write_to_screen_process, args=('', 50, queue))
-    # p.daemon = True
-    # p.start()
-    # controller = OverlayController(queue)
-    # embed()
+        # app = QApplication(sys.argv)
+        # window = OverlayWindow('yes', 50)
+        # window.show()
+        # sys.exit(app.exec_())
+        # queue = Queue()
+        # p = Process(target=write_to_screen_process, args=('', 50, queue))
+        # p.daemon = True
+        # p.start()
+        # controller = OverlayController(queue)
+        # embed()
 
-    # Listen for incoming connections
-    server_socket.listen(1)
+        # Listen for incoming connections
+        server_socket.listen(1)
 
-    while True:
-        print('Waiting for a connection...')
-        connection, client_address = server_socket.accept()
-        
-        try:
-            print('Connection from', client_address)
-
-            received_data = recv_all(connection)
-            print('Received {!r}'.format(received_data))
+        while True:
+            print('Waiting for a connection...')
+            connection, client_address = server_socket.accept()
             
-            phrase = received_data.decode('utf-8')
-            output = ''
-            for chunk in chain.stream(phrase):
+            try:
+                print('Connection from', client_address)
+
+                received_data = recv_all(connection)
+                print('Received {!r}'.format(received_data))
                 
-                # if '\n' in chunk:
-                #     chunk = chunk.replace('\n', '')
-                #     controller.clear()
-                output += chunk
-                try:
-                    writer.write(output)
-                except Exception as e:
-                    print(e)
-                    print(output)
-                # controller.append(chunk)
-                # print(chunk, end="", flush=True)
-            
-            # response = retrieval_chain.invoke({"input": phrase})
-            # print(response["answer"])
-
-            # if received_data == b'minimize window':
-            #     pyautogui.hotkey('win', 'down')
+                phrase = received_data.decode('utf-8')
+                output = ''
+                for chunk in chain.stream(phrase):
                     
-        finally:
-            # Clean up the connection
-            connection.close()
+                    # if '\n' in chunk:
+                    #     chunk = chunk.replace('\n', '')
+                    #     controller.clear()
+                    output += chunk
+                    try:
+                        writer.write(output)
+                    except Exception as e:
+                        print(e)
+                        print(output)
+                    # controller.append(chunk)
+                    # print(chunk, end="", flush=True)
+                
+                # response = retrieval_chain.invoke({"input": phrase})
+                # print(response["answer"])
+
+                # if received_data == b'minimize window':
+                #     pyautogui.hotkey('win', 'down')
+                        
+            finally:
+                # Clean up the connection
+                connection.close()
