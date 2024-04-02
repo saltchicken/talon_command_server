@@ -87,6 +87,8 @@ if __name__ == "__main__":
     
     writer = ScreenWriterClient()
     with ScreenWriterClient() as writer:
+        
+        writer.write('test')
 
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -130,6 +132,7 @@ if __name__ == "__main__":
                     #     controller.clear()
                     output += chunk
                     try:
+                        print('wrote', output)
                         writer.write(output)
                     except Exception as e:
                         print(e)
