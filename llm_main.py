@@ -87,9 +87,6 @@ if __name__ == "__main__":
     
     writer = ScreenWriterClient()
     with ScreenWriterClient() as writer:
-        
-        writer.write('test')
-
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Bind the socket to the port
