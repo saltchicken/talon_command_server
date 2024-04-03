@@ -1,3 +1,4 @@
+import pickle
 from langchain_community.llms import Ollama
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -12,7 +13,14 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import BaseMessageChunk
 from langchain_core.runnables import RunnableGenerator
 
+from dataclasses import dataclass
+
 import socket
+
+@dataclass
+class SocketMessage:
+    type: str
+    message: str
 
 def recv_all(sock, bufsize=4096):
     """
@@ -118,9 +126,11 @@ if __name__ == "__main__":
                 print('Connection from', client_address)
 
                 received_data = recv_all(connection)
-                print('Received {!r}'.format(received_data))
+                received_object = pickle.loads(received_data)
+                print("Received Object:", received_object)
+                # print('Received {!r}'.format(received_data))
                 
-                phrase = received_data.decode('utf-8')
+                phrase = received_object.message
                 output = ''
                 for chunk in chain.stream(phrase):
                     
