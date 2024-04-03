@@ -126,11 +126,12 @@ if __name__ == "__main__":
                 print('Connection from', client_address)
 
                 received_data = recv_all(connection)
-                received_object = pickle.loads(received_data)
-                print("Received Object:", received_object)
+                phrase = received_data.decode('utf-8')
+                # received_object = pickle.loads(received_data)
+                # print("Received Object:", received_object)
                 # print('Received {!r}'.format(received_data))
                 
-                phrase = received_object.message
+                # phrase = received_object.message
                 output = ''
                 for chunk in chain.stream(phrase):
                     
