@@ -17,10 +17,6 @@ from dataclasses import dataclass
 
 import socket
 
-class SocketMessage:
-    type = 0
-    message = 0
-
 def recv_all(sock, bufsize=4096):
     """
     Receive data from the socket until no more data is available.
@@ -126,18 +122,14 @@ if __name__ == "__main__":
 
                 # received_data = recv_all(connection)
                 received_data = connection.recv(4096).decode()
-                
-                if received_data:
                     # phrase = received_data.decode('utf-8')
-                    received_object = json.loads(received_data)
-                    print("Received Object:", received_object)
+                data = json.loads(received_data)
+                # print("Received Object:", data)
                     
-                else:
-                    print("This didn't go through")
-                    continue
                 # print('Received {!r}'.format(received_data))
                 
-                phrase = received_object['name']
+                phrase = data['message']
+                print(phrase)
                 output = ''
                 for chunk in chain.stream(phrase):
                     
