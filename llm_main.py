@@ -133,6 +133,7 @@ if __name__ == "__main__":
                     print("Received Object:", received_object)
                     
                 else:
+                    print("This didn't go through")
                     continue
                 # print('Received {!r}'.format(received_data))
                 
