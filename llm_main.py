@@ -126,9 +126,14 @@ if __name__ == "__main__":
 
                 # received_data = recv_all(connection)
                 received_data = connection.recv(4096).decode()
-                # phrase = received_data.decode('utf-8')
-                received_object = json.loads(received_data)
-                print("Received Object:", received_object)
+                
+                if received_data:
+                    # phrase = received_data.decode('utf-8')
+                    received_object = json.loads(received_data)
+                    print("Received Object:", received_object)
+                    
+                else:
+                    continue
                 # print('Received {!r}'.format(received_data))
                 
                 phrase = received_object.message
