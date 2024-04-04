@@ -1,4 +1,4 @@
-import pickle
+import json
 from langchain_community.llms import Ollama
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -125,9 +125,9 @@ if __name__ == "__main__":
                 print('Connection from', client_address)
 
                 # received_data = recv_all(connection)
-                received_data = connection.recv(4096)
+                received_data = connection.recv(4096).decode()
                 # phrase = received_data.decode('utf-8')
-                received_object = pickle.loads(received_data)
+                received_object = json.loads(received_data)
                 print("Received Object:", received_object)
                 # print('Received {!r}'.format(received_data))
                 
