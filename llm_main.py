@@ -17,10 +17,9 @@ from dataclasses import dataclass
 
 import socket
 
-@dataclass
 class SocketMessage:
-    type: str
-    message: str
+    type = 0
+    message = 0
 
 def recv_all(sock, bufsize=4096):
     """
@@ -126,7 +125,7 @@ if __name__ == "__main__":
                 print('Connection from', client_address)
 
                 # received_data = recv_all(connection)
-                received_data = connection.recv(10000)
+                received_data = connection.recv(4096)
                 # phrase = received_data.decode('utf-8')
                 received_object = pickle.loads(received_data)
                 print("Received Object:", received_object)
