@@ -125,7 +125,8 @@ if __name__ == "__main__":
             try:
                 print('Connection from', client_address)
 
-                received_data = recv_all(connection)
+                # received_data = recv_all(connection)
+                received_data = connection.recv(10000)
                 # phrase = received_data.decode('utf-8')
                 received_object = pickle.loads(received_data)
                 print("Received Object:", received_object)
