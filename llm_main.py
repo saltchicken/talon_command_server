@@ -136,7 +136,7 @@ if __name__ == "__main__":
                     continue
                 # print('Received {!r}'.format(received_data))
                 
-                phrase = received_object.name
+                phrase = received_object['name']
                 output = ''
                 for chunk in chain.stream(phrase):
                     
