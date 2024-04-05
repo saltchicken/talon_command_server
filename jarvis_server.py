@@ -31,7 +31,7 @@ def talon_thread_handler(server_socket, task_queue):
                 break
             else:
                 packet = json.loads(data)
-                if packet.type == 'phrase':
+                if packet['type'] == 'phrase':
                     task_queue.put(data)
                 else:
                     logger.debug('This packet type has not been implemented yet')
