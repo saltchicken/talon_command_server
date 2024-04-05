@@ -6,7 +6,7 @@ client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # Specify the local address and port
 local_address = '0.0.0.0'  # Localhost IP address
-local_port = 12349  # Example port number
+local_port = 12350  # Example port number
 
 # Bind the socket to the local address and port
 client_socket.bind((local_address, local_port))

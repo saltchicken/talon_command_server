@@ -13,6 +13,7 @@ def talon_thread_handler(server_socket):
     #     if not data:
     #         break
     conn.close()
+    print('talon done')
     
 def tasker_thread_handler(server_socket):
     conn, addr = server_socket.accept()
@@ -22,6 +23,7 @@ def tasker_thread_handler(server_socket):
     #     if not data:
     #         break
     conn.close()
+    print('tasker done')
 
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
