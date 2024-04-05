@@ -2,57 +2,49 @@ import socket
 import threading
 from loguru import logger
 
-TASKER_PORT = 12347
+TASKER_PORT = 12345
 TALON_PORT = 12346
 
-def talon_thread_handler(server_socket):
-    conn, addr = server_socket.accept()
-    logger.debug(f"Connection from {addr}")
-    # while True:
-    #     data = conn.recv(1024).decode()
-    #     if not data:
-    #         break
-    conn.close()
-    print('talon done')
+
     
 def tasker_thread_handler(server_socket):
-    conn, addr = server_socket.accept()
-    logger.debug(f"Connection from {addr}")
-    # while True:
-    #     data = conn.recv(1024).decode()
-    #     if not data:
-    #         break
-    conn.close()
-    print('tasker done')
+    while True:
+        logger.debug("Tasker thread waiting for connection")
+        conn, addr = server_socket.accept()
+        logger.debug(f"Connection from {addr}")
+        # while True:
+        #     data = conn.recv(1024).decode()
+        #     if not data:
+        #         break
+        conn.close()
+    logger.debug('tasker thread done')
+    
+def talon_thread_handler(server_socket):
+    while True:
+        logger.debug("Talon thread waiting for connection")
+        conn, addr = server_socket.accept()
+        logger.debug(f"Connection from {addr}")
+        # while True:
+        #     data = conn.recv(1024).decode()
+        #     if not data:
+        #         break
+        conn.close()
+    logger.debug('talon thread done')
 
 def main():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server_socket.bind(('0.0.0.0', 9999))
-    server_socket.listen(2)  # Listen for up to 2 connections
+    tasker_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # tasker_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    tasker_server_socket.bind(('0.0.0.0', 9998))
+    tasker_server_socket.listen(1)
     
-    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(server_socket,))
-    talon_thread = threading.Thread(target=talon_thread_handler, args=(server_socket,))
-
-    # print("Server is listening for connections...")
-
-    # # Accept connections from two clients
-    # client1_conn, client1_addr = server_socket.accept()
-    # print(f"Accepted connection from {client1_addr}")
-    # client2_conn, client2_addr = server_socket.accept()
-    # print(f"Accepted connection from {client2_addr}")
-
-    # Assign variables based on IP addresses
-    # if client1_addr[0] == "192.168.1.100":  # Example IP address for tasker
-    #     tasker_conn = client1_conn
-    #     writer_conn = client2_conn
-    # else:
-    #     tasker_conn = client2_conn
-    #     writer_conn = client1_conn
-
-    # Create threads to handle each client
+    talon_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # talon_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    talon_server_socket.bind(('0.0.0.0', 9999))
+    talon_server_socket.listen(1)
     
-
+    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(tasker_server_socket,))
+    talon_thread = threading.Thread(target=talon_thread_handler, args=(talon_server_socket,))
+    
     # Start the threads
     tasker_thread.start()
     talon_thread.start()
