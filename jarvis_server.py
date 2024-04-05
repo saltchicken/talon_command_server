@@ -8,19 +8,19 @@ TALON_PORT = 12346
 def talon_thread_handler(server_socket):
     conn, addr = server_socket.accept()
     logger.debug(f"Connection from {addr}")
-    while True:
-        data = conn.recv(1024).decode()
-        if not data:
-            break
+    # while True:
+    #     data = conn.recv(1024).decode()
+    #     if not data:
+    #         break
     conn.close()
     
 def tasker_thread_handler(server_socket):
     conn, addr = server_socket.accept()
     logger.debug(f"Connection from {addr}")
-    while True:
-        data = conn.recv(1024).decode()
-        if not data:
-            break
+    # while True:
+    #     data = conn.recv(1024).decode()
+    #     if not data:
+    #         break
     conn.close()
 
 def main():
