@@ -25,8 +25,8 @@ def main():
     server_socket.bind(('0.0.0.0', 9999))
     server_socket.listen(2)  # Listen for up to 2 connections
     
-    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(server_socket))
-    talon_thread = threading.Thread(target=talon_thread_handler, args=(server_socket))
+    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(server_socket,))
+    talon_thread = threading.Thread(target=talon_thread_handler, args=(server_socket,))
 
     # print("Server is listening for connections...")
 
