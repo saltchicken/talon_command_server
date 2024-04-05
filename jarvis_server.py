@@ -63,4 +63,4 @@ def main():
 # Start the server
 if __name__ == "__main__":
     main()
-    loguru.debug('Quitting out of main')
+    logger.debug('Quitting out of main')
