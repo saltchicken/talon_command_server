@@ -1,11 +1,7 @@
 import socket
 import threading
 from loguru import logger
-
-TASKER_PORT = 12345
-TALON_PORT = 12346
-
-
+import json
     
 def tasker_thread_handler(server_socket):
     while True:
@@ -24,10 +20,13 @@ def talon_thread_handler(server_socket):
         logger.debug("Talon thread waiting for connection")
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
-        # while True:
-        #     data = conn.recv(1024).decode()
-        #     if not data:
-        #         break
+        while True:
+            data = conn.recv(4096).decode()
+            if not data:
+                break
+            else:
+                packet = json.loads(data)
+                print(packet)
         conn.close()
     logger.debug('talon thread done')
 
@@ -54,7 +53,8 @@ def main():
     talon_thread.join()
 
     # Close the server socket
-    server_socket.close()
+    tasker_server_socket.close()
+    talon_server_socket.close()
 
 
 
