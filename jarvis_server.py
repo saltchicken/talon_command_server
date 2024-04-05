@@ -2,31 +2,40 @@ import socket
 import threading
 from loguru import logger
 import json
+import queue
     
-def tasker_thread_handler(server_socket):
+def tasker_thread_handler(server_socket, task_queue):
     while True:
         logger.debug("Tasker thread waiting for connection")
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
-        # while True:
-        #     data = conn.recv(1024).decode()
-        #     if not data:
-        #         break
+        while True:
+            # data = conn.recv(1024).decode()
+            data = task_queue.get()
+            if not data:
+                break
+            packet = json.loads(data)
+            print(packet)
         conn.close()
     logger.debug('tasker thread done')
     
-def talon_thread_handler(server_socket):
+def talon_thread_handler(server_socket, task_queue):
     while True:
         logger.debug("Talon thread waiting for connection")
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
         while True:
             data = conn.recv(4096).decode()
+            print(data)
             if not data:
-                break
+                logger.error('Nothing was received. Critical error in talon socket receive')
+                # break
             else:
                 packet = json.loads(data)
-                print(packet)
+                if packet['type'] == 'phrase':
+                    task_queue.put(data)
+                else:
+                    logger.debug('This packet type has not been implemented yet')
         conn.close()
     logger.debug('talon thread done')
 
@@ -41,8 +50,10 @@ def main():
     talon_server_socket.bind(('0.0.0.0', 9999))
     talon_server_socket.listen(1)
     
-    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(tasker_server_socket,))
-    talon_thread = threading.Thread(target=talon_thread_handler, args=(talon_server_socket,))
+    task_queue = queue.Queue()
+    
+    tasker_thread = threading.Thread(target=tasker_thread_handler, args=(tasker_server_socket, task_queue))
+    talon_thread = threading.Thread(target=talon_thread_handler, args=(talon_server_socket, task_queue))
     
     # Start the threads
     tasker_thread.start()
