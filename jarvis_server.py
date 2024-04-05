@@ -15,7 +15,10 @@ def tasker_thread_handler(server_socket, task_queue):
             if not data:
                 break
             packet = json.loads(data)
-            print(packet)
+            if packet['type'] == 'phrase':
+                conn.sendall(data)
+            else:
+                logger.debug('This packet type has not been implemented')
         conn.close()
     logger.debug('tasker thread done')
     
@@ -25,7 +28,6 @@ def talon_thread_handler(server_socket, task_queue):
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
         while True:
-            print('reading from talon')
             data = conn.recv(1024)
             if not data:
                 logger.error('Received blank from Talon, or connection was closed and no problem')
