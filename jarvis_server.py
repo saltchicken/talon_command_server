@@ -2,6 +2,9 @@ import socket
 import threading
 from loguru import logger
 
+TASKER_PORT = 12347
+TALON_PORT = 12346
+
 def talon_thread_handler(server_socket):
     conn, addr = server_socket.accept()
     logger.debug(f"Connection from {addr}")
@@ -22,6 +25,7 @@ def tasker_thread_handler(server_socket):
 
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind(('0.0.0.0', 9999))
     server_socket.listen(2)  # Listen for up to 2 connections
     
