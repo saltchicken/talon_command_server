@@ -29,7 +29,7 @@ def talon_thread_handler(server_socket, task_queue):
             print(data)
             if not data:
                 logger.error('Received blank from Talon')
-                continue
+                break
             else:
                 packet = json.loads(data)
                 if packet['type'] == 'phrase':
