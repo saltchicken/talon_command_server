@@ -25,6 +25,7 @@ def talon_thread_handler(server_socket, task_queue):
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
         while True:
+            print('reading from talon')
             data = conn.recv(4096)
             print(data)
             if not data:
