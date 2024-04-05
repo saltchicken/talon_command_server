@@ -9,13 +9,10 @@ def tasker_thread_handler(server_socket, task_queue):
         logger.debug("Tasker thread waiting for connection")
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
-        while True:
-            # data = conn.recv(1024).decode()
-            data = task_queue.get()
-            if not data:
-                break
-            packet = json.loads(data)
-            print(packet)
+        # while True:
+        #     data = conn.recv(1024).decode()
+        #     if not data:
+        #         break
         conn.close()
     logger.debug('tasker thread done')
     
@@ -28,13 +25,10 @@ def talon_thread_handler(server_socket, task_queue):
             data = conn.recv(4096).decode()
             if not data:
                 logger.error('Nothing was received. Critical error in talon socket receive')
-                # break
+                break
             else:
                 packet = json.loads(data)
-                if packet['type'] == 'phrase':
-                    task_queue.put(data)
-                else:
-                    logger.debug('This packet type has not been implemented yet')
+                print(packet)
         conn.close()
     logger.debug('talon thread done')
 
