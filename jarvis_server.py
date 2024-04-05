@@ -28,15 +28,16 @@ def tasker_thread_handler(server_socket, task_queue, llm_chain):
         while True:
             if flag:
                 break
+            data = task_queue.get()
             # data = conn.recv(1024).decode()
-            try:
-                data = task_queue.get(timeout=1)
+            # try:
+                # data = task_queue.get(timeout=1)
             # except queue.Empty:
             #     logger.debug("Queue was empty")
             #     continue
-            except Exception as e:
-                logger.debug("Queue was empty")
-                continue
+            # except Exception as e:
+            #     logger.debug("Queue was empty")
+            #     continue
                 
             # if not data:
             #     print('aint no data')
