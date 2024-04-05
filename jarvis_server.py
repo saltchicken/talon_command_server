@@ -29,10 +29,17 @@ def tasker_thread_handler(server_socket, task_queue, llm_chain):
             if flag:
                 break
             # data = conn.recv(1024).decode()
-            data = task_queue.get(timeout=1)
-            if not data:
-                print('aint no data')
-                break
+            try:
+                data = task_queue.get(timeout=1)
+            except queue.Empty:
+                logger.debug("Queue was empty")
+                continue
+            except Exception as e:
+                logger.error(e)
+                
+            # if not data:
+            #     print('aint no data')
+            #     break
             packet = json.loads(data)
             if packet['type'] == 'phrase':
                 output = ''
