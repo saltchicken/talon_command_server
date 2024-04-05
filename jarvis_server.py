@@ -3,6 +3,7 @@ import threading
 from loguru import logger
 import json
 import queue
+import errno
 
 from langchain_community.llms import Ollama
 from langchain_community.embeddings import OllamaEmbeddings
@@ -23,7 +24,10 @@ def tasker_thread_handler(server_socket, task_queue, llm_chain):
         logger.debug("Tasker thread waiting for connection")
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
+        flag = False
         while True:
+            if flag:
+                break
             # data = conn.recv(1024).decode()
             data = task_queue.get()
             if not data:
@@ -42,12 +46,19 @@ def tasker_thread_handler(server_socket, task_queue, llm_chain):
                         data = {"type": "phrase", "message": output}
                         data_string = json.dumps(data)
                         conn.sendall(data_string.encode())
-                    except Exception as e:
-                        print(e)
+                    except IOError as e:
+                        if e.errno == errno.EPIPE:
+                            logger.warning("Broken Pipe. Need to reconnect to tasker")
+                            flag = True
+                            break
+                        else:
+                            logger.error(e)
+                            
                 # conn.sendall(data)
             else:
                 logger.debug('This packet type has not been implemented')
         conn.close()
+        logger.debug('Tasker socket closed')
     logger.debug('tasker thread done')
     
 def talon_thread_handler(server_socket, task_queue):
