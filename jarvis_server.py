@@ -31,12 +31,11 @@ def talon_thread_handler(server_socket, task_queue):
                 logger.error('Received blank from Talon, or connection was closed and no problem')
                 break
             else:
-                print(data)
-                # packet = json.loads(data)
-                # if packet['type'] == 'phrase':
-                #     task_queue.put(data)
-                # else:
-                #     logger.debug('This packet type has not been implemented yet')
+                packet = json.loads(data)
+                if packet['type'] == 'phrase':
+                    task_queue.put(data)
+                else:
+                    logger.debug('This packet type has not been implemented yet')
         conn.close()
     logger.debug('talon thread done')
 
