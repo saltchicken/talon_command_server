@@ -29,8 +29,9 @@ def tasker_thread_handler(server_socket, task_queue, llm_chain):
             if flag:
                 break
             # data = conn.recv(1024).decode()
-            data = task_queue.get()
+            data = task_queue.get(timeout=1)
             if not data:
+                print('aint no data')
                 break
             packet = json.loads(data)
             if packet['type'] == 'phrase':
