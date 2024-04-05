@@ -25,7 +25,8 @@ def talon_thread_handler(server_socket, task_queue):
         conn, addr = server_socket.accept()
         logger.debug(f"Connection from {addr}")
         while True:
-            data = conn.recv(4096).decode()
+            data = conn.recv(4096)
+            print(data)
             if not data:
                 logger.error('Nothing was received. Critical error in talon socket receive')
                 break
